@@ -119,99 +119,103 @@ public class WebScrapingService {
     }
 
     private List<String> simulateGoogleSearch(String query, int maxResults) {
-        // Use real, reliable URLs for testing instead of fake ones
         List<String> urls = new ArrayList<>();
         
-        // Base URLs that work well for testing
-        List<String> baseUrls = Arrays.asList(
-            "https://www.linkedin.com/company/",
-            "https://github.com/topics/",
-            "https://stackoverflow.com/questions/tagged/",
-            "https://www.crunchbase.com/discover/organization.companies/",
-            "https://www.glassdoor.com/Reviews/",
-            "https://www.indeed.com/career-advice/finding-a-job/",
-            "https://builtin.com/",
-            "https://www.techrepublic.com/article/",
-            "https://www.cio.com/article/",
-            "https://www.zdnet.com/topic/",
-            "https://www.microsoft.com",
-            "https://www.google.com",
-            "https://www.apple.com",
-            "https://www.amazon.com",
-            "https://www.meta.com",
-            "https://www.netflix.com",
-            "https://www.spotify.com",
-            "https://www.uber.com",
-            "https://www.airbnb.com",
-            "https://www.slack.com",
-            "https://www.dropbox.com",
-            "https://www.salesforce.com",
-            "https://www.adobe.com",
-            "https://www.oracle.com",
-            "https://www.ibm.com",
-            "https://www.intel.com",
-            "https://www.nvidia.com",
-            "https://www.cisco.com",
-            "https://www.hp.com",
-            "https://www.dell.com"
-        );
-        
-        // Generate URLs based on the query and maxResults
-        String querySlug = query.toLowerCase().replaceAll("\\s+", "-").replaceAll("[^a-z0-9-]", "");
-        
-        // Generate URLs dynamically to support any maxResults value
-        int urlCount = 0;
-        String[] suffixes = {"", "-companies", "-services", "-agencies", "-businesses", "-organizations", 
-                           "-solutions", "-providers", "-experts", "-specialists", "-consultants", 
-                           "-firms", "-enterprises", "-startups", "-ventures", "-directory", "-guide",
-                           "-tips", "-reviews", "-news", "-blog", "-resources", "-tools", "-platforms"};
-        
-        String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-        String[] years = {"2024", "2023", "2022", "2021", "2020"};
-        
-        while (urlCount < maxResults) {
-            for (String baseUrl : baseUrls) {
-                if (urlCount >= maxResults) break;
-                
-                String suffix = suffixes[urlCount % suffixes.length];
-                String number = numbers[urlCount % numbers.length];
-                String year = years[urlCount % years.length];
-                
-                if (baseUrl.endsWith("/")) {
-                    // For URLs that need a path, add the query with suffix
-                    urls.add(baseUrl + querySlug + suffix);
-                    urlCount++;
-                    
-                    // Add numbered variations
-                    if (urlCount < maxResults) {
-                        urls.add(baseUrl + querySlug + suffix + "-" + number);
-                        urlCount++;
-                    }
-                    
-                    // Add year variations
-                    if (urlCount < maxResults) {
-                        urls.add(baseUrl + querySlug + suffix + "-" + year);
-                        urlCount++;
-                    }
-                    
-                    // Add combined variations
-                    if (urlCount < maxResults && !suffix.isEmpty()) {
-                        urls.add(baseUrl + querySlug + suffix + "-" + number + "-" + year);
-                        urlCount++;
-                    }
-                } else {
-                    // For complete URLs, add them as-is
-                    urls.add(baseUrl);
-                    urlCount++;
+        try {
+            // Generate real Google search URLs
+            String encodedQuery = java.net.URLEncoder.encode(query, java.nio.charset.StandardCharsets.UTF_8);
+            
+            // Google search patterns (like SocialScraper approach)
+            List<String> searchPatterns = new ArrayList<>();
+            
+            // Basic Google searches
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery);
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "&start=10");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "&start=20");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "&start=30");
+            
+            // Instagram-specific searches (like SocialScraper)
+            if (query.toLowerCase().contains("instagram") || query.toLowerCase().contains("influencer")) {
+                String cleanQuery = query.toLowerCase()
+                    .replace("instagram", "")
+                    .replace("influencer", "")
+                    .trim();
+                if (!cleanQuery.isEmpty()) {
+                    String encodedCleanQuery = java.net.URLEncoder.encode(cleanQuery, java.nio.charset.StandardCharsets.UTF_8);
+                    searchPatterns.add("https://www.google.com/search?q=site:instagram.com+" + encodedCleanQuery + "+-inurl:/p/+-inurl:/explore/+-inurl:/reel/");
+                    searchPatterns.add("https://www.google.com/search?q=site:instagram.com+" + encodedCleanQuery + "+profile");
+                    searchPatterns.add("https://www.google.com/search?q=site:instagram.com+" + encodedCleanQuery + "+bio");
+                    searchPatterns.add("https://www.google.com/search?q=site:instagram.com+" + encodedCleanQuery + "+contact");
+                    searchPatterns.add("https://www.google.com/search?q=site:instagram.com+" + encodedCleanQuery + "+email");
                 }
             }
+            
+            // Site-specific searches
+            searchPatterns.add("https://www.google.com/search?q=site:instagram.com+" + encodedQuery);
+            searchPatterns.add("https://www.google.com/search?q=site:linkedin.com+" + encodedQuery);
+            searchPatterns.add("https://www.google.com/search?q=site:twitter.com+" + encodedQuery);
+            searchPatterns.add("https://www.google.com/search?q=site:youtube.com+" + encodedQuery);
+            searchPatterns.add("https://www.google.com/search?q=site:github.com+" + encodedQuery);
+            
+            // Business and contact searches
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+contact+email");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+about+us");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+company");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+business");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+agency");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+services");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+directory");
+            
+            // Location-based searches
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+USA");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+United+States");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+New+York");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "+California");
+            
+            // News and recent content
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "&tbm=nws");
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "&tbs=qdr:m"); // Past month
+            searchPatterns.add("https://www.google.com/search?q=" + encodedQuery + "&tbs=qdr:w"); // Past week
+            
+            // Bing search URLs for variety
+            searchPatterns.add("https://www.bing.com/search?q=" + encodedQuery);
+            searchPatterns.add("https://www.bing.com/search?q=site:instagram.com+" + encodedQuery);
+            searchPatterns.add("https://www.bing.com/search?q=" + encodedQuery + "+contact");
+            searchPatterns.add("https://www.bing.com/search?q=" + encodedQuery + "+email");
+            
+            // DuckDuckGo search URLs
+            searchPatterns.add("https://duckduckgo.com/?q=" + encodedQuery);
+            searchPatterns.add("https://duckduckgo.com/?q=site:instagram.com+" + encodedQuery);
+            searchPatterns.add("https://duckduckgo.com/?q=" + encodedQuery + "+contact");
+            
+            // Add some real business websites that are likely to have contact info
+            List<String> businessSites = Arrays.asList(
+                "https://www.linkedin.com/search/results/companies/?keywords=" + encodedQuery,
+                "https://www.crunchbase.com/discover/organization.companies/" + encodedQuery,
+                "https://www.glassdoor.com/Reviews/" + encodedQuery,
+                "https://www.indeed.com/cmp/" + encodedQuery,
+                "https://builtin.com/" + encodedQuery,
+                "https://www.techrepublic.com/search/?q=" + encodedQuery,
+                "https://www.cio.com/search/?q=" + encodedQuery
+            );
+            searchPatterns.addAll(businessSites);
+            
+            // Limit to maxResults and remove duplicates
+            urls = searchPatterns.stream()
+                .distinct()
+                .limit(maxResults)
+                .collect(Collectors.toList());
+                
+        } catch (Exception e) {
+            log.error("Error generating search URLs: ", e);
+            // Fallback to basic URLs if encoding fails
+            urls.add("https://www.google.com/search?q=" + query);
+            urls.add("https://www.bing.com/search?q=" + query);
+            urls.add("https://duckduckgo.com/?q=" + query);
         }
         
-        // Remove duplicates and limit to maxResults
-        return urls.stream()
-            .distinct()
-            .limit(maxResults)
-            .collect(Collectors.toList());
+        log.info("Generated {} real search URLs for topic: {}", urls.size(), query);
+        return urls;
     }
 
     private ScrapedData scrapeUrl(String url) {
@@ -238,13 +242,26 @@ public class WebScrapingService {
 
             long responseTime = System.currentTimeMillis() - startTime;
 
+            // Check if this is a search results page and extract actual URLs
+            List<String> foundUrls = new ArrayList<>();
+            if (isSearchResultsPage(url, document)) {
+                foundUrls = extractUrlsFromSearchResults(document);
+                log.info("Found {} URLs from search results page: {}", foundUrls.size(), url);
+            }
+            
+            Set<String> socialLinks = extractSocialLinks(document);
+            // If we found URLs from search results, add them to social links for now
+            if (!foundUrls.isEmpty()) {
+                socialLinks.addAll(foundUrls);
+            }
+
             return ScrapedData.builder()
                 .url(url)
                 .title(extractTitle(document))
                 .description(extractDescription(document))
                 .emails(extractEmails(document))
                 .phoneNumbers(extractPhoneNumbers(document))
-                .socialLinks(extractSocialLinks(document))
+                .socialLinks(socialLinks)
                 .content(extractContent(document))
                 .domain(extractDomain(url))
                 .status("success")
@@ -267,6 +284,78 @@ public class WebScrapingService {
                 .errorMessage("Unexpected error: " + e.getMessage())
                 .responseTime(System.currentTimeMillis() - startTime)
                 .build();
+        }
+    }
+    
+    private boolean isSearchResultsPage(String url, Document document) {
+        // Check if this is a search results page
+        return url.contains("google.com/search") || 
+               url.contains("bing.com/search") || 
+               url.contains("duckduckgo.com") ||
+               document.select("div[data-ved]").size() > 0 || // Google search results
+               document.select(".b_algo").size() > 0 || // Bing search results
+               document.select(".result").size() > 0; // DuckDuckGo results
+    }
+    
+    private List<String> extractUrlsFromSearchResults(Document document) {
+        List<String> urls = new ArrayList<>();
+        
+        try {
+            // Extract URLs from Google search results
+            Elements googleResults = document.select("div[data-ved] a[href^='http']");
+            for (Element element : googleResults) {
+                String href = element.attr("href");
+                if (isValidUrl(href)) {
+                    urls.add(href);
+                }
+            }
+            
+            // Extract URLs from Bing search results
+            Elements bingResults = document.select(".b_algo a[href^='http']");
+            for (Element element : bingResults) {
+                String href = element.attr("href");
+                if (isValidUrl(href)) {
+                    urls.add(href);
+                }
+            }
+            
+            // Extract URLs from DuckDuckGo search results
+            Elements ddgResults = document.select(".result a[href^='http']");
+            for (Element element : ddgResults) {
+                String href = element.attr("href");
+                if (isValidUrl(href)) {
+                    urls.add(href);
+                }
+            }
+            
+            // Remove duplicates and limit
+            return urls.stream()
+                .distinct()
+                .limit(20) // Limit to prevent too many URLs
+                .collect(Collectors.toList());
+                
+        } catch (Exception e) {
+            log.error("Error extracting URLs from search results: ", e);
+            return new ArrayList<>();
+        }
+    }
+    
+    private boolean isValidUrl(String url) {
+        try {
+            // Basic URL validation
+            return url != null && 
+                   url.startsWith("http") && 
+                   !url.contains("google.com") && 
+                   !url.contains("bing.com") && 
+                   !url.contains("duckduckgo.com") &&
+                   !url.contains("youtube.com/watch") && // Skip video pages
+                   !url.contains("facebook.com") && // Skip social media pages
+                   !url.contains("twitter.com") &&
+                   !url.contains("instagram.com/p/") && // Skip Instagram posts
+                   !url.contains("instagram.com/explore/") && // Skip Instagram explore
+                   !url.contains("instagram.com/reel/"); // Skip Instagram reels
+        } catch (Exception e) {
+            return false;
         }
     }
 
