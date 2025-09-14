@@ -2,7 +2,11 @@
 /Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/model/ScrapeRequest.java
 /Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/config/OpenApiConfig.java
 /Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/controller/ScrapingController.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/model/InstagramProfile.java
 /Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/model/ScrapedData.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/service/InstagramScrapingService.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/model/InstagramScrapeResponse.java
 /Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/service/WebScrapingService.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/model/InstagramScrapeRequest.java
 /Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/WebScraperApplication.java
 /Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/config/ScraperConfig.java
