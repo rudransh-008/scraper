@@ -4,6 +4,9 @@ A Spring Boot REST API service for scraping web data including emails, phone num
 
 ## Features
 
+- **Real Search URL Generation**: Generates actual Google, Bing, and DuckDuckGo search URLs (no more fake URLs!)
+- **Instagram-Specific Searches**: Uses `site:instagram.com` patterns like professional scrapers (e.g., [SocialScraper.io](https://socialscraper.io))
+- **Search Result Extraction**: Automatically detects search results pages and extracts actual URLs from them
 - **MVC Architecture**: Clean separation of concerns with Controller, Service, and Model layers
 - **Concurrent Scraping**: Multi-threaded web scraping for better performance
 - **Data Extraction**: Extracts emails, phone numbers, social media links, and content
@@ -11,6 +14,30 @@ A Spring Boot REST API service for scraping web data including emails, phone num
 - **Error Handling**: Comprehensive error handling and logging
 - **RESTful API**: Clean REST endpoints for easy integration
 - **Swagger/OpenAPI Documentation**: Interactive API documentation with Swagger UI
+- **CSV Export**: Download scraped data as CSV files
+- **Field Selection**: Choose specific fields to extract (emails, phone numbers, etc.)
+
+## Search Algorithm
+
+The scraper now uses a sophisticated approach similar to professional tools like [SocialScraper.io](https://socialscraper.io):
+
+### Real Search URL Generation
+- **Google Search**: `https://www.google.com/search?q=your+query`
+- **Instagram Search**: `site:instagram.com+query+-inurl:/p/+-inurl:/explore/+-inurl:/reel/`
+- **Business Search**: `query+contact+email`, `query+about+us`, `query+company`
+- **Multi-Engine**: Google, Bing, DuckDuckGo for comprehensive coverage
+
+### Search Result Processing
+1. **Detection**: Automatically identifies search results pages
+2. **Extraction**: Extracts actual URLs from search results
+3. **Validation**: Filters out non-existent URLs and social media posts
+4. **Scraping**: Processes each valid URL for contact information
+
+### Instagram-Specific Features
+- Uses `site:instagram.com` searches to target Instagram profiles
+- Excludes posts (`/p/`), explore pages (`/explore/`), and reels (`/reel/`)
+- Focuses on profile pages and bio sections for contact info
+- Follows the same patterns used by successful Instagram scrapers
 
 ## Tech Stack
 
@@ -21,6 +48,7 @@ A Spring Boot REST API service for scraping web data including emails, phone num
 - **Lombok** for reducing boilerplate
 - **SpringDoc OpenAPI** for Swagger documentation
 - **Maven** for dependency management
+- **OpenCSV** for CSV export functionality
 
 ## Quick Start
 
