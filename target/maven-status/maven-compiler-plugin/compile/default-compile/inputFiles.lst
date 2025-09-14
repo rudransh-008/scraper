@@ -1,0 +1,8 @@
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/model/ScrapeResponse.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/model/ScrapeRequest.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/config/OpenApiConfig.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/controller/ScrapingController.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/model/ScrapedData.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/service/WebScrapingService.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/WebScraperApplication.java
+/Users/rudranshgupta/Desktop/springboot-web-scraper/src/main/java/com/scraper/config/ScraperConfig.java

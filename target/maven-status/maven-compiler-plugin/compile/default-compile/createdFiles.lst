@@ -1,0 +1,10 @@
+com/scraper/model/ScrapedData.class
+com/scraper/service/WebScrapingService.class
+com/scraper/config/OpenApiConfig.class
+com/scraper/model/ScrapeRequest.class
+com/scraper/model/ScrapeResponse$Builder.class
+com/scraper/config/ScraperConfig.class
+com/scraper/model/ScrapedData$Builder.class
+com/scraper/WebScraperApplication.class
+com/scraper/controller/ScrapingController.class
+com/scraper/model/ScrapeResponse.class
